@@ -40,7 +40,10 @@ Run:
 ```sh
 golangci-ling run && go test -v -timeout=30s --cover --race ./...
 ```
-or with nix: `nix-shell --run "pubsub-lint-run-tests"`
+or with nix: 
+```sh
+nix-shell --run "pubsub-lint-run-tests"
+```
 
 ### Ideas to test
 Current implementation uses mutexes for concurrency control and linked list from stdlib to store messages.
