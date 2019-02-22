@@ -34,7 +34,7 @@ func main() {
 }
 ```
 
-There is also executable example in (example_test.go)[example_test.go].
+There is also executable example in [example_test.go](example_test.go).
 
 ## Testing
 Run:
