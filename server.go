@@ -71,9 +71,10 @@ func (s *Server) Poll(topic, subscriber string) ([]byte, error) {
 	tn, sn := topicSubscriberNames(topic, subscriber)
 	s.m.RLock()
 	cl := s.clients[sn]
-	s.m.RUnlock()
 	if cl == nil {
 		return nil, ErrSubscriptionNotFound
 	}
-	return cl.poll(tn)
+	msg, err := cl.poll(tn)
+	s.m.RUnlock()
+	return msg, err
 }
