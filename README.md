@@ -49,5 +49,5 @@ nix-shell --run "pubsub-lint-run-tests"
 Current implementation uses mutexes for concurrency control and linked list from stdlib to store messages.
 It would be great to implement and compare performance with next implementations:
  * channel based communication
- * (stm)[https://github.com/lukechampine/stm) instead of mutexes
+ * [stm](https://github.com/lukechampine/stm) instead of mutexes
  * Review possible implementations for concurrent queues (right now we have RWMutex on linked list for all operations)
