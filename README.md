@@ -3,7 +3,7 @@
 ## Requirements
  * [Golang 1.11+](https://golang.org/dl/)
  * [dep 0.5.0](https://github.com/golang/dep#installation)
- * [golangci-lint](https://github.com/golangci/golangci-lint)
+ * [golangci-lint](https://github.com/golangci/golangci-lint)  
 or 
  * [nix](https://nixos.org/nix/download.html) - just run `nix-shell` in project's folder and it will drop you into development environment
 
