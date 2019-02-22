@@ -32,8 +32,9 @@ func main() {
 	fmt.Println(string(msg))
 	// Output: {"foo":"bar"}
 }
-
 ```
+
+There is also executable example in (example_test.go)[example_test.go].
 
 ## Testing
 Run:
