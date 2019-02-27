@@ -18,11 +18,11 @@ func (s *Server) Subscribe(topic string, subscriber string) {
 	s.m.Lock()
 	cl := s.clients[sn]
 	if cl == nil {
-		cl = s.clients[sn]
-		if cl == nil {
-			cl = newClient()
-			s.clients[sn] = cl
-		}
+		// cl = s.clients[sn]
+		// if cl == nil {
+		cl = newClient()
+		s.clients[sn] = cl
+		// }
 	}
 	cl.subscribe(tn)
 	clients := s.topics[tn]

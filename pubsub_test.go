@@ -3,6 +3,7 @@ package pubsub
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"sync"
 	"testing"
 
@@ -235,4 +236,17 @@ func TestManySubscribesWithManyPublishers(tt *testing.T) {
 		}
 		t.Equal(subMsgCounter, 1000)
 	}
+}
+
+func TestSubscribeDeadlock(tt *testing.T) {
+	t := check.T(tt)
+	s := NewServer()
+	topic := "topic"
+	subscriber := "sub"
+	msg, err := s.Poll(topic, subscriber)
+	t.Nil(msg)
+	t.Equal(err, ErrSubscriptionNotFound)
+
+	s.Subscribe(topic, subscriber)
+	log.Fatalf("Line is not reacheable")
 }
