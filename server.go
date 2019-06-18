@@ -16,6 +16,7 @@ type Server struct {
 func (s *Server) Subscribe(topic string, subscriber string) {
 	tn, sn := topicSubscriberNames(topic, subscriber)
 	s.m.Lock()
+	defer s.m.Unlock()
 	cl := s.clients[sn]
 	if cl == nil {
 		// cl = s.clients[sn]
@@ -31,13 +32,13 @@ func (s *Server) Subscribe(topic string, subscriber string) {
 		s.topics[tn] = clients
 	}
 	clients[sn] = cl
-	s.m.Unlock()
 }
 
 // Unsubscribe - remove topic's subscription for client
 func (s *Server) Unsubscribe(topic, subscriber string) {
 	tn, sn := topicSubscriberNames(topic, subscriber)
 	s.m.Lock()
+	defer s.m.Unlock()
 	cl := s.clients[sn]
 	topicsAmount := cl.unsubscribe(tn)
 	if topicsAmount == 0 {
@@ -48,7 +49,6 @@ func (s *Server) Unsubscribe(topic, subscriber string) {
 	if len(topicClients) == 0 {
 		delete(s.topics, tn)
 	}
-	s.m.Unlock()
 }
 
 // Publish - deliver msg to all topic subscribers
@@ -57,11 +57,11 @@ func (s *Server) Unsubscribe(topic, subscriber string) {
 func (s *Server) Publish(topic string, msg []byte) {
 	tn := topicName(topic)
 	s.m.RLock()
+	defer s.m.RUnlock()
 	clients := s.topics[tn]
 	for _, cl := range clients {
 		cl.publish(tn, msg)
 	}
-	s.m.RUnlock()
 }
 
 // Poll - returns next message on topic of subscriber and removes it from subscribers queue.
@@ -70,11 +70,11 @@ func (s *Server) Publish(topic string, msg []byte) {
 func (s *Server) Poll(topic, subscriber string) ([]byte, error) {
 	tn, sn := topicSubscriberNames(topic, subscriber)
 	s.m.RLock()
+	defer s.m.RUnlock()
 	cl := s.clients[sn]
 	if cl == nil {
 		return nil, ErrSubscriptionNotFound
 	}
 	msg, err := cl.poll(tn)
-	s.m.RUnlock()
 	return msg, err
 }

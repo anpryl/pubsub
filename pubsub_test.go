@@ -3,7 +3,6 @@ package pubsub
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"sync"
 	"testing"
 
@@ -246,7 +245,5 @@ func TestSubscribeDeadlock(tt *testing.T) {
 	msg, err := s.Poll(topic, subscriber)
 	t.Nil(msg)
 	t.Equal(err, ErrSubscriptionNotFound)
-
 	s.Subscribe(topic, subscriber)
-	log.Fatalf("Line is not reacheable")
 }

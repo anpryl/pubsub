@@ -19,28 +19,28 @@ func newClient() *client {
 
 func (c *client) subscribe(topic topicName) {
 	c.m.Lock()
+	defer c.m.Unlock()
 	queue := c.clientMessages[topic]
 	// To avoid queue rewrite if client subscribes two times on same subscription
 	if queue == nil {
 		c.clientMessages[topic] = list.New()
 	}
-	c.m.Unlock()
 }
 
 // unsubscribe returns amount of topics left after unsubscribtion
 func (c *client) unsubscribe(topic topicName) int {
 	c.m.Lock()
+	defer c.m.Unlock()
 	delete(c.clientMessages, topic)
 	topicsAmount := len(c.clientMessages)
-	c.m.Unlock()
 	return topicsAmount
 }
 
 func (c *client) publish(topic topicName, msg json.RawMessage) {
 	c.m.Lock()
+	defer c.m.Unlock()
 	queue := c.clientMessages[topic]
 	queue.PushBack(msg)
-	c.m.Unlock()
 }
 
 func (c *client) poll(topic topicName) (json.RawMessage, error) {
